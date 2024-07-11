@@ -5,9 +5,9 @@
 void turn_right(){
     // Set the duty cycles for PD5/PD6
     //links
-    setDutyCycle(PD5, 255);
+    setDutyCycle(PD5, 200);
     //rechts
-    setDutyCycle(PD6, 180);
+    setDutyCycle(PD6, 200);
     // Set IN1 to HIGH and don't set IN2 to HIGH (leave LOW) -> Left motors FORWARD
     PORTD |= (1 << PIN_IN1_FORWARD_LEFT); 
     // Set IN2 to LOW, nothing else HIGH -> No motors turn
@@ -23,9 +23,9 @@ void turn_right(){
 void turn_left(){
     // Set the duty cycles for PD5/PD6
     //links
-    setDutyCycle(PD5, 180);
+    setDutyCycle(PD5, 200);
     //rechts
-    setDutyCycle(PD6, 255);
+    setDutyCycle(PD6, 200);
     // links  FORWARD, 0
     PORTD &= ~(1 << PIN_IN1_FORWARD_LEFT);
     // links BACKWARD 1
@@ -37,31 +37,31 @@ void turn_left(){
 }
 
 // Leichte Abbiegen nach links
-void drive_left(){
+void drive_right(){
     // Set the duty cycles for PD5/PD6
     //links
-    setDutyCycle(PD5, 155);
+    setDutyCycle(PD5, 200);
     //rechts
-    setDutyCycle(PD6, 255);
+    setDutyCycle(PD6, 0);
     // links  FORWARD, 1
     PORTD |= (1 << PIN_IN1_FORWARD_LEFT);
     // links BACKWARD 1
     PORTB &= ~(1 << PIN_IN2_BACKWARD_LEFT);
     // RIGHT FORWARD 1
-    PORTB |= (1 << PIN_IN4_FORWARD_RIGHT);
+    PORTB &= ~(1 << PIN_IN4_FORWARD_RIGHT);
     // Right BACKWARD 0
     PORTB &= ~(1 << PIN_IN3_BACKWARD_RIGHT);
 }
 
 // Leichte Abbiegen nach links
-void drive_right(){
+void drive_left(){
     // Set the duty cycles for PD5/PD6
     //links
-    setDutyCycle(PD5, 255);
+    setDutyCycle(PD5, 0);
     //rechts
-    setDutyCycle(PD6, 155);
+    setDutyCycle(PD6, 200);
     // links  FORWARD, 1
-    PORTD |= (1 << PIN_IN1_FORWARD_LEFT);
+    PORTD &= ~(1 << PIN_IN1_FORWARD_LEFT);
     // links BACKWARD 1
     PORTB &= ~(1 << PIN_IN2_BACKWARD_LEFT);
     // RIGHT FORWARD 1
@@ -131,3 +131,76 @@ void rotate_clockwise() {
     PORTB &= ~(1 << PIN_IN3_BACKWARD_RIGHT);
 }
 
+void handleDrivingLogic(int *left, int *middle, int *right, int *last_right, int *start, char * field_count) {
+	if (currentLap > 3){
+		return;
+		}
+	
+    if (!(*left) && (*middle) && !(*right)) {
+        gerade();
+        *start = 0;
+    } else if (!*left && !*middle && !*right) {
+		*start = 0;
+        if (*last_right) {
+            turn_right();
+        } else {
+            turn_left();
+        }
+        
+        
+    } else if (!*left && !*middle && *right) {
+        drive_right();
+        //turn_right();
+        *start = 0;
+    } else if (!*left && *middle && *right) {
+        gerade();
+        *start = 0;
+    } else if (*left && !*middle && !*right) {
+        drive_left();
+        //turn_left();
+        *start = 0;
+    } else if (*left && !*middle && *right) {
+        gerade();
+        *start = 0;
+    } else if (*left && *middle && !*right) {
+        gerade();
+        *start = 0;
+    }
+    // Start field
+    else if (*left && *middle && *right) {
+        gerade();
+        // If threshold then increment
+        if (!*start) {
+            *start = m_second;
+        }
+        if (m_second - *start > 10 && *field_count == 0) {
+			isCompleted = 1;
+			*field_count = 1;
+			// When the robot is on the start field and the race has not started
+			if (isCompleted && currentLap == 0 && second == 1) {
+            USART_print("Same story, different student ... boring, IES needs to refactor this course.\n");
+        }
+            currentLap++;
+            if (currentLap > 3){
+				stop();
+				}
+        }
+    }
+    
+    if( !(*right) || !(*left) || !(*middle) ){
+		field_count = 0;
+		}
+    
+    if (*left || *right) {
+        
+        if (*right) {
+            *last_right = 1;
+        } else {
+            *last_right = 0;
+        }
+        
+
+        
+        
+    }
+}

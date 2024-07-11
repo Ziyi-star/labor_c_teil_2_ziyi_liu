@@ -34,60 +34,11 @@ void check_adc_rotate() {
 }
 
 
-void handleDrivingLogic(int *left, int *middle, int *right, int *last_right, int *start) {
-    if (!*left && *middle && !*right) {
-        gerade();
-        *start = 0;
-    } else if (!*left && !*middle && !*right) {
-        if (*last_right) {
-            turn_right();
-        } else {
-            turn_left();
-        }
-    } else if (!*left && !*middle && *right) {
-        drive_right();
-        *start = 0;
-    } else if (!*left && *middle && *right) {
-        turn_right();
-        *start = 0;
-    } else if (*left && !*middle && !*right) {
-        drive_left();
-        *start = 0;
-    } else if (*left && !*middle && *right) {
-        gerade();
-        *start = 0;
-    } else if (*left && *middle && !*right) {
-        turn_left();
-        *start = 0;
-    }
-    // Start field
-    else if (*left && *middle && *right) {
-        gerade();
-        // If threshold then increment
-        if (!*start) {
-            *start = m_second;
-        }
-        if (m_second - *start > 10) {
-			isCompleted = 1;
-            stop();
-            currentLap++;
-            return; 
-        }
-    }
-    if (*left || *right) {
-        if (*right) {
-            *last_right = 1;
-        } else {
-            *last_right = 0;
-        }
-    }
-}
-
-
 int main(void) {
 	
     setup_heartbeat_timer();
     int start = 0;
+    char field_count = 0;
     
     init_run();
     
@@ -122,7 +73,10 @@ int main(void) {
     int middle;
     
     int last_right = 0;
+    int last_middle = 0;
     char message = 0;
+    
+    char str_buffer [50];
 
     while (1) {
 		
@@ -134,7 +88,7 @@ int main(void) {
         
         left = (adcval2 > 350);
         right = (adcval0 > 300);
-        middle = (adcval1 > 200);
+        middle = (adcval1 > 300);
         
         update_model(regmdl, left, middle, right);
 		
@@ -144,34 +98,49 @@ int main(void) {
             last_model_state = *regmdl;
         }
         
-		// S pressed and before first round
-        if (message == 'S' && currentLap == 0) {
+        if (message == 'S'){
 			isSessionActive = 1;
-			handleDrivingLogic(&left, &middle, &right, &last_right, &start);        
-        }
+		}
+        
+		// S pressed and before first round
+		/*
+        if (!isSessionActive && currentLap == 0) {
+			if (centi_second) {
+            USART_print("Hey you, you know what to do. :-)\n");
+            centi_second = 0;
+			}
+		}
+		*/         
         
         // currentLap >=1
         if (isSessionActive && !isPaused) {
             if (isCompleted && currentLap == 1) {
 				isCompleted = 0;
-				USART_print("Here I am once more, going down the only round I've ever known...\n"); 
-                handleDrivingLogic(&left, &middle, &right, &last_right, &start);  
+				USART_print("Here I am once more, going down the only round I've ever known...\n");    
             } 
+            handleDrivingLogic(&left, &middle, &right, &last_right, &start, &field_count);
+            /*
+			if (second) {
+				sprintf(str_buffer, "Currently I go round #%d\n", currentLap);
+				USART_print(str_buffer);
+				second = 0;
+				}
+			*/
+				
             if (isCompleted && currentLap == 2) {
 				isCompleted = 0;
 				USART_print("YEAH, done first lap, feelig well, going for lap 2/3\n"); 
-				handleDrivingLogic(&left, &middle, &right, &last_right, &start);  
             } 
             if (isCompleted && currentLap == 3) {
 				isCompleted = 0;
 				USART_print("YEAH YEAH, done 2nd lap, feeling proud, going for lap 3/3\n"); 
-				handleDrivingLogic(&left, &middle, &right, &last_right, &start);  			
-				}
+			}
 			if (isCompleted && currentLap == 4) {
                 int totalSeconds = (int)(time(NULL) - raceStartTime);
                 USART_print(" Finally finished , It's over and done now, after $SECONDS seconds. Thanks for working with me! :-) I will reset myself in 5 seconds. Take care!\n");
                 //todo: reset
                 isSessionActive = 0;
+                stop();
                 break;
             }
         }
@@ -181,13 +150,16 @@ int main(void) {
             isPaused = !isPaused;
             if (isPaused) {
                 stop();  // Stop any movement
+                USART_print("Paused ... zzzZZZzzzZZZzzz ... Press P again to unpause me\n");
                 run_led_sequence(regmdl);
             }
         }
 
         // Turning logic
         if (message == 'T' && (isSessionActive || isPaused)) {
-            isTurning = 1;
+            if (half_second) {
+			USART_print("Lalalala!\n");
+		}
 			// Store current ADC values for 'H'
 			initialAdcValues.adc0 = adcval0;
 			initialAdcValues.adc1 = adcval1;

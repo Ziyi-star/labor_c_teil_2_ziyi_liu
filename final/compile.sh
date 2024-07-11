@@ -1,7 +1,7 @@
 #!/bin/bash
 echo COMPILING...
-echo avr-gcc $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11-o tmpfile -mmcu=atmega328p -Os -D F_CPU=16E6
-avr-gcc $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11-o tmpfile -mmcu=atmega328p -Os -D F_CPU=16E6
+echo avr-gcc $1 $2 $3 $4 $5 $6 $7 $8 $9 $A $B -o tmpfile -mmcu=atmega328p -Os -D F_CPU=16E6
+avr-gcc $1 $2 $3 $4 $5 $6 $7 $8 $9 $A $B -o tmpfile -mmcu=atmega328p -Os -D F_CPU=16E6
 
 echo GENERATING FIRMWARE...
 echo avr-objcopy -O ihex tmpfile tmpfile.hex

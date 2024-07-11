@@ -6,6 +6,7 @@
 #include "iesusart.h"
 #include "iesmotors.h"
 #include "iesadc.h"
+#include "global_variables.h"
 
 // Konstanten für die PB- und PD-Pins
 #define PIN_IN1_FORWARD_LEFT PD7
@@ -21,6 +22,8 @@ void gerade();
 void init_run();
 void stop();
 void rotate_clockwise();
+void handleDrivingLogic(int *left, int *middle, int *right, int *last_right, int *start, char * field_count);
+
 
 #endif
 

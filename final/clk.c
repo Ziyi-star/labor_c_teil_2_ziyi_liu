@@ -3,42 +3,23 @@
 ISR(TIMER1_COMPA_vect) {
   cnt+=1;
   //0,01 sekunde
-  if (cnt == 625) {
-	cnt = 0;
+  if (cnt % 625 == 0) {
 	m_second+=1;
   }
   //10 Hz 
-  if (cnt == 6250) {
-	  // When the robot is not on the start field and the race has not started
-	  if (!isCompleted && currentLap == 0) {
-            USART_print("Hey you, you know what to do. :-)\n");
-        }
-  }
+  if (cnt % 6250 == 0) {
+	  centi_second = 1;
+	}
   //2 Hz
-  if (cnt == 31250) {
-	  if (isTurning) {
-		USART_print("Lalalala!\n");
-		}
+  if (cnt % 31250 == 0) {
+	  half_second = 1;
 	}  
 	
   //1 Hz 
   if (cnt == 62500) {
-	  // When the robot is on the start field and the race has not started
-        if (isCompleted && currentLap == 0) {
-            USART_print("Same story, different student ... boring, IES needs to refactor this course.\n");
-        }
-        // When the robot is racing
-        if (isCompleted && currentLap > 0) {
-            char round_msg[50];
-            sprintf(round_msg, "Currently I go round #%d\n", currentLap);
-            USART_print(round_msg);
-        }
-        if (isPaused){
-			USART_print("Paused ... zzzZZZzzzZZZzzz ... Press P again to unpause me\n");
-		}
+	  cnt = 0;
+	  second = 1;
   }
-  
-  
   
 }
 

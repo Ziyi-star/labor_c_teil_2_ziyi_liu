@@ -1,0 +1,430 @@
+Username for 'https://github.com': Ziyi-star
+Password for 'https://Ziyi-star@github.com': 
+
+
+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
+
+20240610:
+1.git auf vm tun, aber wie?
+2.Tunnel aufbauen von mein Laptop auf vm
+3. was tut jeden Register und was bedeutet jede Zeile Code:
+
+
+less /usr/lib/avr/include/avr/io.h
+
+heute todos
+1. jede Aufgabes Zeil verstehen
+2. Verständnisfragen arbeiten
+3. Simulation machen
+
+--------------------------------------------
+
+2024 0614
+1.github auf vm weiter einrichten x
+2. code anpassen, simulieren
+3. Hausaufgabe machen und gucken
+
+---------------------------------
+
+git useful code:
+
+git --version
+
+git clone https://github.com/Ziyi-star/labor_c_teil_2_ziyi_liu.git~      
+
+//add all changed files
+git add .
+git commit -m "added all the files from yesterdays lab work"
+git status
+git push
+
+git branch
+git branch -m main
+git push --set-upstream origin main
+
+//Switched to a new branch 'main'
+git checkout -b main
+
+                  
+
+
+
+
+
+----------------------------------------------
+
+20240617:
+
+1.wichtige File: skeleton_motors.c
+
+    // Both sides stop
+    PORTB &= ~(1 << PB0);
+    PORTB &= ~(1 << PB1);
+
+    // Both sides stop
+    PORTD &= ~(1 << PD7);
+    PORTB &= ~(1 << PB3);
+
+2. code anpassen habe ich fertig, 
+simulieren noch nicht.
+
+TODOS:
+3.Notizen zusammenfassen
+.wie kann man richtig compilieren?
+./compile.sh test.c iesmotors.c
+
+.umbennen file: iessreg.c
+
+Sachen ausführbar machen: chmod +x compile.sh
+
+
+Fragen für Treffen:
+1. how to simulate
+mikrocontroller Fireware laden: hex
+Robot simulation starten
+Rot klicken
+
+2. Hausaufgabe von Blatt1
+
+---------------------------------------------------
+
+### Zusammenfassung der Aufgaben im Dokument "exercise_02_condensed.pdf"
+
+#### Aufgabe 0: Wichtig!
+- **Akkus nicht einlegen:** Setzen Sie die Akkus noch nicht in den Roboter ein, bis es vom Betreuer gestattet wird.
+
+#### Aufgabe 0b: Shiften von Nullen
+- **Bitshifting:** Werte, die nur aus Nullen bestehen, können nicht sinnvoll verschoben werden, um eine einzelne Bitstelle zu löschen.
+- **Bitmasken:** Verwenden Sie Bitmasken und bitweise Operatoren, um Bits zu löschen.
+
+#### Aufgabe 0c: Prüfung anmelden
+- **Prüfungsanmeldung:** Melden Sie sich zur Prüfung an und beachten Sie Hinweise im Moodle-Kurs.
+
+#### Aufgabe 1: Das Schieberegister – Ausführliche Erklärung und Beispielcode-Besprechung
+- **Quelltext `sreg.c`:** Testen, kompilieren und flashen Sie den Code.
+- **Schaltbild verstehen:** Arbeiten Sie den Quelltext durch und verstehen Sie das Schaltbild eines 3-Bit-Schieberegisters.
+
+#### Aufgabe 2: Der Antriebsstrang - Grundlagen
+- **Motorsteuerung:** Motoren benötigen eine Mindestspannung. Der L298N-Brückenbaustein wird verwendet, um die Motoren anzusteuern.
+- **Anschlüsse:** Motoren sind an Brückeneingänge ENA, ENB, IN1, IN2, IN3 und IN4 des Microcontrollers angeschlossen.
+- **Drehrichtung und Antrieb:** Durch Schalten dieser Eingänge wird die Drehrichtung und der Antrieb der Motoren gesteuert.
+
+#### Aufgabe 3: Die Motoren anschalten
+- **Quellcode laden:** Laden Sie `skeleton_motors.c`, `iesmotors.h` und `iesmotors.c` aus Moodle.
+- **Roboter vorbereiten:** Setzen Sie den Roboter auf einen Holzbock, kompilieren und flashen Sie den Code.
+- **Akkus einsetzen:** Setzen Sie die Akkus ein und schalten Sie den Roboter ein. Die Motoren sollten sich in verschiedene Richtungen bewegen.
+- **Wahrheitstabelle erstellen:** Erstellen Sie eine Tabelle, die angibt, wie die Motoren abhängig von der Beschaltung der Brückeneingänge gesteuert werden.
+
+#### Aufgabe 4: Die Geschwindigkeit der Motoren steuern und Pulsweitenmodulation
+- **Pulsweitenmodulation (PWM):** PWM wird verwendet, um die effektive Spannung und somit die Geschwindigkeit der Motoren zu steuern.
+- **Timer 0 verwenden:** Nutzen Sie den Timer 0 des ATmega328p, um PWM zu implementieren.
+- **Code anpassen:** Stellen Sie sicher, dass die Pins PD5 und PD6 als Ausgänge gesetzt sind und verwenden Sie die Funktionen `setupTimer0()` und `setDutyCycle(uint8_t pin, uint8_t value)`.
+
+#### Aufgabe 5: Programmieren - Pflicht für alle
+- **Linienfolgeroboter programmieren:** Entwickeln Sie ein Programm, das den Roboter der schwarzen Linie entlang fahren lässt.
+- **Sensoren verwenden:** Nutzen Sie die Linienfolgersensoren, um den Roboter zu steuern und die Richtung anzupassen.
+- **Algorithmus entwickeln:** Implementieren Sie eine Logik, die sicherstellt, dass der Roboter auf der Linie bleibt und gegebenenfalls lenkt.
+
+### Generelle Hinweise und Fehlerbehebung:
+- **Akkus richtig einsetzen:** Achten Sie auf die richtige Polarität der Akkus.
+- **Roboter einschalten:** Stellen Sie sicher, dass der Roboter eingeschaltet ist, wenn er nicht mehr am USB-Kabel hängt.
+- **Akkuladung überprüfen:** Laden Sie die Akkus nach etwa 10 Minuten Fahrzeit erneut.
+- **Duty-Cycle prüfen:** Stellen Sie sicher, dass der Duty-Cycle hoch genug ist, damit die Motoren genug Leistung haben.
+
+### Zusammenfassung der wichtigsten Punkte:
+- Schalten Sie die Akkus nur ein, wenn es vom Betreuer erlaubt ist.
+- Verwenden Sie Bitmasken und bitweise Operatoren zum Löschen von Bits.
+- Melden Sie sich zur Prüfung an und beachten Sie Moodle-Hinweise.
+- Verstehen Sie die Funktionsweise des Schieberegisters und des Antriebsstrangs.
+- Implementieren Sie PWM zur Steuerung der Motorgeschwindigkeit.
+- Entwickeln Sie einen Algorithmus für den Linienfolgeroboter.
+- Achten Sie auf die richtige Handhabung und Pflege der Akkus.
+
+------------------------------
+0622
+
+1. umbennen braucht man?
+2. machen sich klar was tut PB0,1,4,7, schon gefragt in chatgpt.
+
+    // Both sides forward
+    PORTD |= (1 << PD7);
+    PORTB |= (1 << PB3);
+
+    // Set IN1 to LOW and don't set IN2 to HIGH (leave LOW) -> Left motors OFF
+    PORTD &= ~(1 << PD7);
+
+    // Both sides stop
+    PORTD &= ~(1 << PD7);
+    PORTB &= ~(1 << PB3);
+
+-------------------------------------------------------
+0627
+header Datei verloren, muss gucken
+
+
+
+#define PIN_IN1_FORWARD_LEFT PD7
+#define PIN_IN2_BACKWARD_LEFT PB0
+#define PIN_IN3_FORWARD_RIGHT PB1
+#define PIN_IN4_BACKWARD_RIGHT PB3
+
+"Added the rename file and give the makros the correct names compared to the previous version".
+
+---------------------------------------------------------
+
+0703
+Aufgabe:
+1.3 mal fahren und am Ende stehen bleiben beim schwarzen Fläche?
+Hauptziele:
+2. Selbstständiges Flashen: 
+Flashen Sie den Roboter mit der Firmware, die Sie per make aus Ihrem Softwareprojekt erzeugt haben.
+
+Inbetriebnahme und Positionierung: 
+
+1.Beliebig auf Track stellen und abschalten.
+2. Einschalten & PC verbinden.
+
+3. Start: Steuerzeichen. 
+
+4. Auf dem Startfeld sollen alle drei Leuchtdioden mit 1Hz blinken und eine Nachricht senden:
+mit einer Geschwindigkeit von 1Hz:
+Same story, different student ... boring, IES needs to refactor this course.
+
+4. Roboter nicht auf dem Startfeld steht, soll er eine andere Nachricht mit 10Hz senden:
+Hey you, you know what to do. :-)
+
+ und die Zustände der Linienfolgerelemente über die Leuchtdioden anzeigen.
+
+5. Verhalten nach Positionierung: Sobald der Roboter auf das Startfeld gesetzt wird, sollen die Leuchtdioden wieder mit 1Hz blinken und der Text mit 1Hz übertragen werden.
+
+
+Steuerungsanweisungen:
+6. S: Startet das Abfahren des Linientracks für drei Runden und gibt dabei verschiedene Statusmeldungen aus.
+7. P: Pausiert den Roboter und zeigt ein Lauflicht mit 0.5Hz an. Wiederholtes P-Senden setzt die Fahrt fort.
+8. T: Lässt den Roboter im Uhrzeigersinn drehen und gibt den Text "Lalalala!" mit 2Hz aus. H beendet diesen Modus.
+9. E: Schaltet in den EXTENDED-Modus für zusätzliche Funktionalitäten.
+
+LED
+Sachen ausgeben
+Timer
+Stop
+trabbeln
+3 mal fahren und Ende stehen
+
+am Anfang: 
+1. in die Nähe von Startfield setzen
+2.Cutecom öffnen
+3. Motor zu
+
+---------------------------
+0703
+
+1.LED klarmachen
+
+----------------------------
+
+0704:
+Frage:
+1. iessreg.c klarmachen für LED
+
+
+todos:
+vernünftig code in verschiedene Dateien auslagern
+Man zuerst logic haben und todos tun
+
+aus Vorlesung:
+simulator:
+Roboter Fireware: hex 
+Mikrocontroller : rechts load Firmware
+Robotor: rechts start simulator, Fenster gezeigt
+Rot Knof start
+verstrichene Zeit: 30% der Zeit in echt Leben
+
+cutecom: einfacher Version
+mikroctroler rechts usart1
+Linienfolgersensor
+2^10
+rechts auf Robotor bewegen klicken
+
+open vor mikrocontroller
+cutecom öffnen tmt0
+
+serielle monitor in cutecom: in die mitte was umstellen
+
+eigene Tracks mahlen: builder
+
+u/a zoomen
+Holz mahlen
+Hindernis bauen
+speichern
+disable builder
+settings:
+niedirg Frequenz schneller Benny 10 Hz
+
+Empfindlichkeit der Robotor
+
+Lauflicht
+
+chmod +x compile.sh
+./compile.sh self_main.c self_line_follow.c iesusart.c iesadc.c self_motor.c self_led.c self_timer.c
+
+
+
+
+1000 milisekunde = 1 sekunde
+
+1hz= 1s
+2 hz = 0.5 sekunde
+
+
+
+62500 = 1s
+
+Lauflicht
+big Logik
+
+			switch(cnt_run){
+				case 0:
+					//todo: print with 10Hz:Hey you, you know what to do. :-)
+					
+					//todo: whole driving logik, pause, rotate logik
+					
+					break;
+				case 1:
+					//todo: print with 
+					
+				case 2:
+				case 3:
+
+
+Um Ihren Roboter präzise zu implementieren, basierend auf den detaillierten Anforderungen, hier eine genauere Zusammenfassung für jeden Aspekt der Steuerung und des Verhaltens:
+
+### Grundlegende Steuerung und Initialisierung:
+1. **Motorsteuerung bei Einschalten:**
+   - Stellen Sie sicher, dass die Motoren inaktiv bleiben, bis ein explizites Steuersignal nach der korrekten Positionierung auf dem Startfeld empfangen wird.
+
+2. **Erkennung und Signalisierung des Startfeldes:**
+   - Der Roboter muss durch Blinken von drei Leuchtdioden mit 1Hz und Aussenden des Textes "Same story, different student ... boring, IES needs to refactor this course." mit 1Hz anzeigen, dass er sich auf dem Startfeld befindet.
+
+### Verhalten außerhalb des Startfelds:
+3. **Statusanzeige außerhalb des Startfelds:**
+   - Wenn der Roboter nicht auf dem Startfeld steht und das Rennen noch nicht begonnen hat, soll er die Nachricht "Hey you, you know what to do. :-)" mit 10Hz senden.
+   - Die Leuchtdioden zeigen an, ob die entsprechenden Linienfolgerelemente (links, mittig, rechts) über einer schwarzen Linie sind.
+
+### Rennverhalten und Steuerungslogik:
+4. **Start des Rennens:**
+   - Bei Empfang des Steuerzeichens 'S' soll der Roboter den Track abfahren und den Zustand der Runden durch Textnachrichten ("Currently I go round #$ROUND") mit 1Hz kommunizieren.
+   - Für jede Runde gibt es spezifische Nachrichten, die einmalig bei Überqueren des Start/Zielfelds ausgegeben werden.
+
+5. **Pausenmodus (Steuerungsanweisung 'P'):**
+   - Der Roboter pausiert sofort, zeigt dies durch ein Lauflicht der Leuchtdioden mit 0.5Hz an und sendet "Paused ... zzzZZZzzzZZZzzz ... P again to unpause me."
+   - Er kann durch erneutes Senden von 'P' aus der Pause fortsetzen.
+
+6. **Kreiseldrehung (Steuerungsanweisung 'T'):**
+   - Bei Empfang des Zeichens 'T' dreht sich der Roboter schnell im Kreis, ohne sich zu bewegen, und sendet dabei "Lalalala!" mit 2Hz.
+
+7. **Erweiterte Funktionalität (Steuerungsanweisung 'E'):**
+   - Schaltet den Roboter in den EXTENDED-Modus um, in dem erweiterte Funktionen ausgeführt werden können.
+
+### Abschluss und Reset:
+8. **Reset und Abschluss der Runden:**
+   - Nach der dritten Runde und einer zusätzlichen Wartezeit von 5 Sekunden wird der Roboter automatisch durch den Watchdog-Timer zurückgesetzt. 
+   - Die finale Nachricht lautet: "Finally finished, It's over and done now, after $SECONDS seconds. Thanks for working with me! :-) I will reset myself in 5 seconds. Take care!"
+   - Der Reset kann auch manuell über eine Reset-Taste erfolgen, wenn der Roboter im T-Modus ist.
+
+### Technische Implementierung:
+- **Hardware-Setup:** Schließen Sie die Leuchtdioden und Linienfolgerelemente korrekt an das Schieberegister an.
+- **Software-Steuerung:** Implementieren Sie die Logik zur Steuerung der Leuchtdioden und zur Textübermittlung abhängig von den Linienfolgerzuständen und dem Status des Roboters.
+
+Diese detaillierte Beschreibung sollte Ihnen dabei helfen, den Roboter effektiv zu programmieren und vorzubereiten, sodass er die erforderlichen Aktionen präzise ausführen kann.
+
+
+/*               
+        if (message == 'S') {
+            // Driving logic
+            handleDrivingLogic(&left, &middle, &right, &last_right, &start, &ride, m_second);
+			// First 'P'
+            if (message == 'P') {
+                // 1. stop, blink light, output something
+                stop();
+                run_led_sequence(regmdl,500);
+                pause_print("Paused ... zzzZZZzzzZZZzzz ... Press P again to unpause me\n", 1000);
+			}
+                // second 'P',break, exit
+                if (message == 'P') {
+                break;
+            }
+
+            if (message == 'T') {
+				// Store current ADC values
+				initialAdcValues.adc0 = adcval0;
+				initialAdcValues.adc1 = adcval1;
+				initialAdcValues.adc2 = adcval2;
+				
+                // rotate clockwise, output something
+                rotate_clockwise();
+                pause_print("Lalalala!\n", 500);
+                if (message == 'H') {
+					// Function to handle the rotation until ADC values match
+					checkAdcAndRotate();  
+					
+                }
+                break;
+            }
+        }
+ */
+
+
+// Define a structure to hold the ADC values
+typedef struct {
+    uint16_t adc0;
+    uint16_t adc1;
+    uint16_t adc2;
+} ADCValues;
+
+int cnt_run = 0;
+uint16_t m_second = 0;
+ADCValues initialAdcValues;
+
+int currentLap = 0;
+time_t raceStartTime;
+int lapCompleted = 0;
+int isPaused = 0;
+int isSessionActive = 0;
+int isTurning = 0;
+
+-----------------------------------------------
+
+0711
+mit Timer machen:
+1.Stehen auf Startfeld:zwar mit einer Geschwindigkeit von 1Hz:Same story, different student ... boring, IES needs to refactor this course.
+2.nicht auf dem Startfeld stehen und das Abfahren der drei Runden noch nicht gestartet worden sein, dann müssen Sie ihn eine andere Textnachricht ausgeben lassen, und zwar mit einer Geschwindigkeit von 10Hz: Hey you, you know what to do. :-)
+3.Während des Abfahrens des Tracks muss Ihr Roboter mit einer Frequenz von 1Hz den Text
+Currently I go round #$ROUND ausgeben, wobei Sie $ROUND bitte als Platzhalter verstehen, in den Sie die aktuelle Rundenzahl, in der
+sich Ihr Roboter befindet, eintragen – zählen Sie die Runden ab 1 beginnend.
+
+Fahrlogik bisschen repaieren
+debug und simulation
+
+chmod +x compile_simulate.sh
+
+./compile_simulate.sh main.c clk.c led.c track.c global_variables.c iesusart.c iesadc.c iesmotors.c
+
+chmod +x compile.sh
+
+./compile.sh main.c clk.c led.c track.c global_variables.c iesusart.c iesadc.c iesmotors.c
+
+---------------------------------------------------
+
+0711:
+1.debug
+2.check code Logik
+3.run on simulate
+4.reset maybe
+
+2 parameter sprintf
+
+
+
+
+
